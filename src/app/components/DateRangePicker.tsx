@@ -1,18 +1,13 @@
 "use client";
 
-import * as React from "react";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { addDays, format } from "date-fns";
+import * as React from "react";
 import { DateRange } from "react-day-picker";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/app/components/ui/button";
 import { Calendar } from "@/app/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/app/components/ui/popover";
+import { cn } from "@/lib/utils";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 
 function DateRangePicker({ className }: React.HTMLAttributes<HTMLDivElement>) {
@@ -24,7 +19,7 @@ function DateRangePicker({ className }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div className={cn("grid gap-2", className)}>
       <Dialog>
-        <DialogTrigger>
+        <DialogTrigger asChild>
           <Button
             id="date"
             variant={"outline"}
