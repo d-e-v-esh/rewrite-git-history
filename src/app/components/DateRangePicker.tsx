@@ -13,6 +13,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/app/components/ui/popover";
+import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 
 function DateRangePicker({ className }: React.HTMLAttributes<HTMLDivElement>) {
   const [date, setDate] = React.useState<DateRange | undefined>({
@@ -22,8 +23,8 @@ function DateRangePicker({ className }: React.HTMLAttributes<HTMLDivElement>) {
 
   return (
     <div className={cn("grid gap-2", className)}>
-      <Popover>
-        <PopoverTrigger asChild>
+      <Dialog>
+        <DialogTrigger>
           <Button
             id="date"
             variant={"outline"}
@@ -45,18 +46,18 @@ function DateRangePicker({ className }: React.HTMLAttributes<HTMLDivElement>) {
               <span>Pick a date</span>
             )}
           </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[1150px] h-auto">
           <Calendar
             initialFocus
             mode="range"
             defaultMonth={date?.from}
             selected={date}
             onSelect={setDate}
-            numberOfMonths={2}
+            numberOfMonths={4}
           />
-        </PopoverContent>
-      </Popover>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
