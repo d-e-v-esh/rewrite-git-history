@@ -40,7 +40,7 @@ import {
   TableRow,
 } from "@/app/components/ui/table";
 import SelectCommand from "./SelectCommand";
-import DatePicker from "./DatePicker";
+import DateAndTimePicker from "./DateAndTimePicker";
 import { ScrollArea } from "./ui/scroll-area";
 
 const data: Payment[] = [
@@ -245,7 +245,7 @@ export const columns: ColumnDef<Payment>[] = [
     header: "Date",
     cell: ({ row }) => (
       <div>
-        <DatePicker />
+        <DateAndTimePicker />
       </div>
     ),
   },
