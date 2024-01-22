@@ -17,6 +17,16 @@ import { Input } from "./ui/input";
 function DateAndTimePicker() {
   const [date, setDate] = React.useState<Date>();
 
+  const handleTimeChange = (event: any) => {
+    const time = event.target.value;
+    if (date && time) {
+      const [hours, minutes] = time.split(":").map(Number);
+      const updatedDate = new Date(date);
+      updatedDate.setHours(hours, minutes);
+      setDate(updatedDate);
+    }
+  };
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -38,7 +48,7 @@ function DateAndTimePicker() {
           initialFocus
         />
 
-        <Input type="time" onChange={(event) => {}} />
+        <Input type="time" onChange={handleTimeChange} />
       </PopoverContent>
     </Popover>
   );
