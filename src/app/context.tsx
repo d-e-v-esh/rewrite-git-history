@@ -4,6 +4,8 @@ import { ReactNode, createContext, useContext, useReducer } from "react";
 
 export enum ActionType {
   SET_INPUT_DATA = "SET_INPUT_DATA",
+  SET_OUTPUT_DATA = "SET_OUTPUT_DATA",
+  SET_CURRENT_DATA = "SET_CURRENT_DATA",
 }
 
 interface Action {
@@ -13,10 +15,14 @@ interface Action {
 
 interface DefaultState {
   inputData: string;
+  outputData: Object;
+  currentData: Object;
 }
 
 const defaultState = {
   inputData: "",
+  outputData: {},
+  currentData: {},
 };
 
 export const AppContext = createContext<
@@ -31,6 +37,13 @@ const appReducer = (state: DefaultState, action: Action) => {
   switch (action.type) {
     case "SET_INPUT_DATA":
       return { ...state, inputData: action.payload };
+
+    case "SET_OUTPUT_DATA":
+      return { ...state, outputData: action.payload };
+
+    case "SET_CURRENT_DATA":
+      return { ...state, currentData: action.payload };
+
     default:
       return state;
   }
