@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 import {
   CaretSortIcon,
@@ -30,7 +28,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/app/components/ui/dropdown-menu";
-import { Input } from "@/app/components/ui/input";
 import {
   Table,
   TableBody,
@@ -39,161 +36,50 @@ import {
   TableHeader,
   TableRow,
 } from "@/app/components/ui/table";
-import SelectCommand from "./SelectCommand";
+
+import { Input } from "@/app/components/ui/input";
+import useAppContext from "../context";
+import parseGitRebaseInput from "../utils/parseGitRebaseInput";
 import DateAndTimePicker from "./DateAndTimePicker";
-import { ScrollArea } from "./ui/scroll-area";
+import SelectCommand from "./SelectCommand";
+import DataTable from "./DataTable";
 
-const data: Payment[] = [
-  {
-    id: "m5gr84i9",
-    amount: 316,
-    status: "success",
-    email: "ken99@yahoo.com",
-  },
-  {
-    id: "3u1reuv4",
-    amount: 242,
-    status: "success",
-    email: "Abe45@gmail.com",
-  },
-  {
-    id: "derv1ws0",
-    amount: 837,
-    status: "processing",
-    email: "Monserrat44@gmail.com",
-  },
-  {
-    id: "5kma53ae",
-    amount: 874,
-    status: "success",
-    email: "Silas22@gmail.com",
-  },
-  {
-    id: "bhqSDFecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@hotmail.com",
-  },
-
-  {
-    id: "bhqezvbczxvbcj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@hotmail.com",
-  },
-  {
-    id: "bhqcvzbecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@hotmail.com",
-  },
-  {
-    id: "bhCZXCVqecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@hotmail.com",
-  },
-  {
-    id: "bhqexvzxcvcj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@hotmail.com",
-  },
-  {
-    id: "bhqeghjghjcj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@hotmail.com",
-  },
-  {
-    id: "bhqrhrthtecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@hotmail.com",
-  },
-  {
-    id: "bhqefgasdfgcj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@hotmail.com",
-  },
-  {
-    id: "bhqagadfgecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@hotmail.com",
-  },
-  {
-    id: "bhqedbdfgcj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@hotmail.com",
-  },
-  {
-    id: "bhqecasfgbj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@hotmail.com",
-  },
-
-  {
-    id: "bhqeergecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@hotmail.com",
-  },
-  {
-    id: "bhqdrtyeafdecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@hotmail.com",
-  },
-  {
-    id: "bhqadfgsdfghsecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@hotmail.com",
-  },
-  {
-    id: "bhqecjadfgasdgf4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@hotmail.com",
-  },
-  {
-    id: "bhqejghjgdcj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@hotmail.com",
-  },
-  {
-    id: "bhqhecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@hotmail.com",
-  },
-  {
-    id: "bhqgfgfecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@hotmail.com",
-  },
-  {
-    id: "bhqedfsacj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@hotmail.com",
-  },
-];
-
-export type Payment = {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  email: string;
+export type Commit = {
+  hash: string;
+  commitMessage: string;
+  command: string;
+  // command: "pick" | "reword" | "edit" | "squash";
 };
 
-export const columns: ColumnDef<Payment>[] = [
+// const data: Commit[] = [
+//   { hash: "000000", command: "pick", commitMessage: "feat: add component 0" },
+//   { hash: "000001", command: "pick", commitMessage: "feat: add component 1" },
+//   { hash: "000002", command: "pick", commitMessage: "feat: add component 2" },
+//   { hash: "000003", command: "pick", commitMessage: "feat: add component 3" },
+//   { hash: "000004", command: "pick", commitMessage: "feat: add component 4" },
+//   { hash: "000005", command: "pick", commitMessage: "feat: add component 5" },
+//   { hash: "000006", command: "pick", commitMessage: "feat: add component 6" },
+//   { hash: "000007", command: "pick", commitMessage: "feat: add component 7" },
+//   { hash: "000008", command: "pick", commitMessage: "feat: add component 8" },
+//   { hash: "000009", command: "pick", commitMessage: "feat: add component 9" },
+//   { hash: "00000a", command: "pick", commitMessage: "feat: add component 10" },
+//   { hash: "00000b", command: "pick", commitMessage: "feat: add component 11" },
+//   { hash: "00000c", command: "pick", commitMessage: "feat: add component 12" },
+//   { hash: "00000d", command: "pick", commitMessage: "feat: add component 13" },
+//   { hash: "00000e", command: "pick", commitMessage: "feat: add component 14" },
+//   { hash: "00000f", command: "pick", commitMessage: "feat: add component 15" },
+//   { hash: "000010", command: "pick", commitMessage: "feat: add component 16" },
+//   { hash: "000011", command: "pick", commitMessage: "feat: add component 17" },
+//   { hash: "000012", command: "pick", commitMessage: "feat: add component 18" },
+//   { hash: "000013", command: "pick", commitMessage: "feat: add component 19" },
+//   { hash: "000014", command: "pick", commitMessage: "feat: add component 20" },
+//   { hash: "000015", command: "pick", commitMessage: "feat: add component 21" },
+//   { hash: "000016", command: "pick", commitMessage: "feat: add component 22" },
+//   { hash: "000017", command: "pick", commitMessage: "feat: add component 23" },
+//   { hash: "000018", command: "pick", commitMessage: "feat: add component 24" },
+// ];
+
+export const columns: ColumnDef<Commit>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -217,33 +103,40 @@ export const columns: ColumnDef<Payment>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "status",
+    accessorKey: "command",
     header: "Command",
-    cell: ({ row }) => (
-      <div className="capitalize">
+    cell: () => (
+      <div>
         <SelectCommand />
       </div>
     ),
   },
 
   {
-    accessorKey: "status",
+    accessorKey: "hash",
     header: "Hash",
-    cell: ({ row }) => <div>kl23jhi</div>,
+    cell: ({ row }) => {
+      const hash: string = row.getValue("hash");
+
+      return <div>{hash}</div>;
+    },
   },
   {
-    accessorKey: "email",
-    header: "Commit",
-    cell: ({ row }) => (
-      <div>
-        <Input />
-      </div>
-    ),
+    accessorKey: "commitMessage",
+    header: "Commit Message",
+    cell: ({ row }) => {
+      const commitMessage: string = row.getValue("commitMessage");
+      return (
+        <div>
+          <Input defaultValue={commitMessage} />
+        </div>
+      );
+    },
   },
   {
-    accessorKey: "email",
-    header: "Date",
-    cell: ({ row }) => (
+    accessorKey: "date",
+    header: "Date And Time",
+    cell: () => (
       <div>
         <DateAndTimePicker />
       </div>
@@ -252,142 +145,12 @@ export const columns: ColumnDef<Payment>[] = [
 ];
 
 const CommitsTable = () => {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
-
-  const table = useReactTable({
-    data,
-    columns,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
-    state: {
-      sorting,
-      columnFilters,
-      columnVisibility,
-      rowSelection,
-    },
-  });
+  const { state } = useAppContext();
+  const data = parseGitRebaseInput(state.inputData);
 
   return (
-    <div className="w-auto">
-      <div className="flex items-center py-4">
-        <Input
-          placeholder="Filter commits..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Columns <ChevronDownIcon className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }>
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            <>
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}>
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center">
-                    No results.
-                  </TableCell>
-                </TableRow>
-              )}
-            </>
-          </TableBody>
-        </Table>
-      </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} commit(s) selected.
-        </div>
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}>
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}>
-            Next
-          </Button>
-        </div>
-      </div>
+    <div>
+      <DataTable columns={columns} data={data} />
     </div>
   );
 };
