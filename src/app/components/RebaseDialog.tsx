@@ -3,6 +3,7 @@
 import { Button } from "@/app/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -10,15 +11,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/app/components/ui/dialog";
-import { Input } from "@/app/components/ui/input";
-import { Label } from "@/app/components/ui/label";
-import { useState } from "react";
 import ReactAce from "react-ace/lib/ace";
+import useAppContext, { ActionType } from "../context";
+import { useState } from "react";
 
 const RebaseDialog = () => {
   const [inputData, setInputData] = useState("");
-
-  // TODO: Set inputData to global state
+  const { dispatch } = useAppContext();
 
   function onChange(newValue: string) {
     setInputData(newValue);
@@ -30,27 +29,40 @@ const RebaseDialog = () => {
         <Button variant="outline">Enter Rebase Text</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[1200px]">
-        <DialogHeader>
-          <DialogTitle>Rebase Script</DialogTitle>
-          <DialogDescription>
-            Paste the rebase script your terminal
-          </DialogDescription>
-        </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <ReactAce
-            mode="bash"
-            width="60full"
-            height="75vh"
-            theme="dark"
-            onChange={onChange}
-            name="REBASE_OUTPUT"
-            fontSize={18}
-            editorProps={{ $blockScrolling: false }}
-          />
-        </div>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter>
+        <form
+          action=""
+          onSubmit={(e) => {
+            e.preventDefault();
+
+            dispatch({
+              type: ActionType.SET_INPUT_DATA,
+              payload: inputData,
+            });
+          }}>
+          <DialogHeader>
+            <DialogTitle>Rebase Script</DialogTitle>
+            <DialogDescription>
+              Paste the rebase script your terminal
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <ReactAce
+              mode="bash"
+              width="60full"
+              height="75vh"
+              theme="dark"
+              onChange={onChange}
+              name="REBASE_OUTPUT"
+              fontSize={18}
+              editorProps={{ $blockScrolling: false }}
+            />
+          </div>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button type="submit">Save changes</Button>
+            </DialogClose>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );
