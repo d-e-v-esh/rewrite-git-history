@@ -1,16 +1,23 @@
-function parseGitRebaseInput(
+const parseGitRebaseInput = (
   input: string
-): Record<string, { command: string; commitMessage: string }> {
+): Array<{ hash: string; command: string; commitMessage: string }> => {
   const lines = input.trim().split("\n");
-  const result: Record<string, { command: string; commitMessage: string }> = {};
+  const result: Array<{
+    hash: string;
+    command: string;
+    commitMessage: string;
+  }> = [];
 
   for (const line of lines) {
-    const [command, commitHash, ...commitMessageParts] = line.split(" ");
-    if (command && commitHash) {
-      const commitMessage = commitMessageParts.join(" ");
-      result[commitHash] = { command, commitMessage };
-    }
+    const [command, hash, ...commitMessageParts] = line.split(" ");
+    const commitMessage = commitMessageParts.join(" ");
+    result.push({
+      hash,
+      command,
+      commitMessage,
+    });
   }
 
   return result;
-}
+};
+export default parseGitRebaseInput;
