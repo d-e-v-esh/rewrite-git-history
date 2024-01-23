@@ -107,11 +107,15 @@ const CommitsTable = () => {
     {
       accessorKey: "date",
       header: "Date And Time",
-      cell: () => (
-        <div>
-          <DateAndTimePicker />
-        </div>
-      ),
+      cell: ({ row }) => {
+        const index = row.index;
+        const dateAndTime = state.currentData[index].dateAndTime;
+        return (
+          <div>
+            <DateAndTimePicker defaultDateAndTime={dateAndTime} />
+          </div>
+        );
+      },
     },
   ];
 

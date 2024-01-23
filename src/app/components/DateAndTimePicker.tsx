@@ -1,10 +1,9 @@
 "use client";
 
-import * as React from "react";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
+import * as React from "react";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/app/components/ui/button";
 import { Calendar } from "@/app/components/ui/calendar";
 import {
@@ -12,10 +11,18 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/app/components/ui/popover";
-import { Input } from "./ui/input";
+import { cn } from "@/lib/utils";
 
-function DateAndTimePicker() {
+const DateAndTimePicker = ({
+  defaultDateAndTime,
+}: {
+  defaultDateAndTime: Date;
+}) => {
   const [date, setDate] = React.useState<Date>();
+
+  React.useEffect(() => {
+    setDate(defaultDateAndTime);
+  }, []);
 
   const handleTimeChange = (event: any) => {
     const time = event.target.value;
@@ -48,10 +55,17 @@ function DateAndTimePicker() {
           initialFocus
         />
 
-        <Input type="time" onChange={handleTimeChange} />
+        <input
+          defaultValue={
+            date ? `${format(date, "H")}:${format(date, "m")}` : "12:12"
+          }
+          onChange={handleTimeChange}
+          aria-label="Time"
+          type="time"
+        />
       </PopoverContent>
     </Popover>
   );
-}
+};
 
 export default DateAndTimePicker;
