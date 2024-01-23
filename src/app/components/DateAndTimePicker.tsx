@@ -10,6 +10,7 @@ import {
   PopoverTrigger,
 } from "@/app/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { Separator } from "./ui/separator";
 
 interface DateAndTimePickerProps {
   defaultDateAndTime: Date;
@@ -69,14 +70,19 @@ const DateAndTimePicker: React.FC<DateAndTimePickerProps> = ({
           initialFocus
         />
 
-        <input
-          defaultValue={
-            date ? `${format(date, "HH")}:${format(date, "mm")}` : "12:12"
-          }
-          onChange={handleTimeChange}
-          aria-label="Time"
-          type="time"
-        />
+        <Separator />
+
+        <div className="flex items-center justify-center">
+          <input
+            defaultValue={
+              date ? `${format(date, "HH")}:${format(date, "mm")}` : "12:12"
+            }
+            className="p-4"
+            onChange={handleTimeChange}
+            aria-label="Time"
+            type="time"
+          />
+        </div>
       </PopoverContent>
     </Popover>
   );

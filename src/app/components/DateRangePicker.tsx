@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarIcon } from "@radix-ui/react-icons";
+import { CalendarIcon, ClockIcon } from "@radix-ui/react-icons";
 import { addDays, format } from "date-fns";
 import * as React from "react";
 import { DateRange } from "react-day-picker";
@@ -9,6 +9,7 @@ import { Button } from "@/app/components/ui/button";
 import { Calendar } from "@/app/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
+import { Separator } from "./ui/separator";
 
 function DateRangePicker({ className }: React.HTMLAttributes<HTMLDivElement>) {
   const [date, setDate] = React.useState<DateRange | undefined>({
@@ -24,7 +25,7 @@ function DateRangePicker({ className }: React.HTMLAttributes<HTMLDivElement>) {
             id="date"
             variant={"outline"}
             className={cn(
-              "w-[300px] justify-start text-left font-normal",
+              "w-fit justify-start text-left font-normal",
               !date && "text-muted-foreground"
             )}>
             <CalendarIcon className="mr-2 h-4 w-4" />
@@ -40,6 +41,13 @@ function DateRangePicker({ className }: React.HTMLAttributes<HTMLDivElement>) {
             ) : (
               <span>Pick a date</span>
             )}
+
+            <div className="px-4">
+              <Separator orientation="vertical" className="bg-gray-400 h-4" />
+            </div>
+
+            <ClockIcon className="mr-2 h-4 w-4" />
+            {"10:12 - 18:14"}
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[1150px] h-auto">
