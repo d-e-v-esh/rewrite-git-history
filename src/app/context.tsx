@@ -8,21 +8,43 @@ export enum ActionType {
   SET_CURRENT_DATA = "SET_CURRENT_DATA",
 }
 
-interface Action {
-  type: ActionType;
+interface SetInputDataAction {
+  type: ActionType.SET_INPUT_DATA;
   payload: string;
 }
 
-interface DefaultState {
-  inputData: string;
-  outputData: Object;
-  currentData: Object;
+interface SetOutputDataAction {
+  type: ActionType.SET_OUTPUT_DATA;
+  payload: string;
 }
 
-const defaultState = {
+interface SetCurrentDataAction {
+  type: ActionType.SET_CURRENT_DATA;
+  payload: Array<{
+    command: string;
+    hash: string;
+    commitMessage: string;
+    dateAndTime: Date;
+  }>;
+}
+
+type Action = SetInputDataAction | SetOutputDataAction | SetCurrentDataAction;
+
+interface DefaultState {
+  inputData: string;
+  outputData: string;
+  currentData: Array<{
+    command: string;
+    hash: string;
+    commitMessage: string;
+    dateAndTime: Date;
+  }>;
+}
+
+const defaultState: DefaultState = {
   inputData: "",
-  outputData: {},
-  currentData: {},
+  outputData: "",
+  currentData: [],
 };
 
 export const AppContext = createContext<
@@ -33,15 +55,16 @@ export const AppContext = createContext<
   | undefined
 >(undefined);
 
-const appReducer = (state: DefaultState, action: Action) => {
+const appReducer = (state: DefaultState, action: Action): DefaultState => {
   switch (action.type) {
-    case "SET_INPUT_DATA":
+    case ActionType.SET_INPUT_DATA:
       return { ...state, inputData: action.payload };
 
-    case "SET_OUTPUT_DATA":
+    case ActionType.SET_OUTPUT_DATA:
       return { ...state, outputData: action.payload };
 
-    case "SET_CURRENT_DATA":
+    case ActionType.SET_CURRENT_DATA:
+      // Assuming we want to replace the entire array
       return { ...state, currentData: action.payload };
 
     default:
@@ -63,7 +86,7 @@ const useAppContext = () => {
   const context = useContext(AppContext);
 
   if (context === undefined) {
-    throw new Error("useAppContext must be used within a AppProvider");
+    throw new Error("useAppContext must be used within an AppProvider");
   }
   return context;
 };
