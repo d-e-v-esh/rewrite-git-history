@@ -1,6 +1,6 @@
 "use client";
 
-import useAppContext from "../context";
+import useAppContext, { ActionType } from "../context";
 import { Button } from "./ui/button";
 
 const Run = () => {
@@ -10,7 +10,10 @@ const Run = () => {
     <div>
       <Button
         onClick={() => {
-          console.log("runrun");
+          dispatch({
+            type: ActionType.SET_OUTPUT_DATA,
+            payload: JSON.stringify(state.currentData, null, 2),
+          });
         }}>
         Run
       </Button>
