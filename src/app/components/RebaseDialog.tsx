@@ -16,8 +16,8 @@ import useAppContext, { ActionType } from "../context";
 import { useState } from "react";
 
 const RebaseDialog = () => {
-  const [inputData, setInputData] = useState("");
-  const { dispatch } = useAppContext();
+  const { state, dispatch } = useAppContext();
+  const [inputData, setInputData] = useState(state.inputData);
 
   function onChange(newValue: string) {
     setInputData(newValue);
@@ -51,6 +51,7 @@ const RebaseDialog = () => {
               width="60full"
               height="75vh"
               theme="dark"
+              defaultValue={state.inputData}
               onChange={onChange}
               name="REBASE_OUTPUT"
               fontSize={18}
