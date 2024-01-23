@@ -1,36 +1,40 @@
 "use client";
 
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/app/components/ui/tabs";
-
+import { useEffect, useState, useRef } from "react";
 import AceEditor from "react-ace";
-import { ScrollArea } from "./ui/scroll-area";
-import GitHubCalendar from "react-github-calendar";
+import useAppContext from "../context";
+import convertJsonToGit from "../utils/parseJsonToGit";
 
 const OutputSection = () => {
-  function onChange(newValue: string) {
-    console.log("change", newValue);
-  }
+  const { state } = useAppContext();
+  const [outputData, setOutputData] = useState<string>("");
+  const aceEditorRef = useRef<any>(null);
+
+  useEffect(() => {
+    const gitString = convertJsonToGit(state.currentData);
+    setOutputData(gitString);
+    if (aceEditorRef.current) {
+      aceEditorRef.current.editor.setValue(gitString, -1);
+    }
+  }, [state.outputData]);
+
   return (
     <div>
       <div>
         <AceEditor
-          mode="bash"
+          ref={aceEditorRef}
+          mode="json"
           width="40vw"
           height="75vh"
           theme="dark"
-          onChange={onChange}
+          readOnly
+          defaultValue={outputData}
           name="REBASE_OUTPUT"
           fontSize={24}
           editorProps={{ $blockScrolling: false }}
         />
       </div>
-
-      <GitHubCalendar username="grubersjoe" />
+      {/* <GitHubCalendar username="grubersjoe" /> */}
     </div>
   );
 };
