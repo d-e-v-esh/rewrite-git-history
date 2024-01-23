@@ -1,7 +1,5 @@
-"use client";
-
 import { CalendarIcon } from "@radix-ui/react-icons";
-import { format } from "date-fns";
+import { format, setHours, setMinutes } from "date-fns";
 import * as React from "react";
 
 import { Button } from "@/app/components/ui/button";
@@ -13,23 +11,39 @@ import {
 } from "@/app/components/ui/popover";
 import { cn } from "@/lib/utils";
 
-const DateAndTimePicker = ({
-  defaultDateAndTime,
-}: {
+interface DateAndTimePickerProps {
   defaultDateAndTime: Date;
+}
+
+const DateAndTimePicker: React.FC<DateAndTimePickerProps> = ({
+  defaultDateAndTime,
 }) => {
-  const [date, setDate] = React.useState<Date>();
+  const [date, setDate] = React.useState<Date | null>(null);
 
   React.useEffect(() => {
     setDate(defaultDateAndTime);
-  }, []);
+  }, [defaultDateAndTime]);
 
-  const handleTimeChange = (event: any) => {
+  const handleDateChange = (newDate: Date | null) => {
+    if (date && newDate) {
+      const updatedDate = new Date(
+        newDate.getFullYear(),
+        newDate.getMonth(),
+        newDate.getDate(),
+        date.getHours(),
+        date.getMinutes()
+      );
+      setDate(updatedDate);
+    } else {
+      setDate(newDate);
+    }
+  };
+
+  const handleTimeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const time = event.target.value;
     if (date && time) {
       const [hours, minutes] = time.split(":").map(Number);
-      const updatedDate = new Date(date);
-      updatedDate.setHours(hours, minutes);
+      const updatedDate = setHours(setMinutes(date, minutes), hours);
       setDate(updatedDate);
     }
   };
@@ -38,7 +52,7 @@ const DateAndTimePicker = ({
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          variant={"outline"}
+          variant="outline"
           className={cn(
             "w-[240px] justify-start text-left font-normal",
             !date && "text-muted-foreground"
@@ -51,13 +65,13 @@ const DateAndTimePicker = ({
         <Calendar
           mode="single"
           selected={date}
-          onSelect={setDate}
+          onSelect={handleDateChange}
           initialFocus
         />
 
         <input
           defaultValue={
-            date ? `${format(date, "H")}:${format(date, "m")}` : "12:12"
+            date ? `${format(date, "HH")}:${format(date, "mm")}` : "12:12"
           }
           onChange={handleTimeChange}
           aria-label="Time"
