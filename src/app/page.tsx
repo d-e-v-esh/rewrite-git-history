@@ -2,6 +2,7 @@ import Image from "next/image";
 import OutputSection from "./components/OutputSection";
 import InputSection from "./components/InputSection";
 import { Button } from "./components/ui/button";
+import Run from "./components/Run";
 
 export default function Home() {
   return (
@@ -16,7 +17,7 @@ export default function Home() {
         </div>
 
         <div className="bg-teal-500 w-24 flex items-center justify-center">
-          <Button>Run</Button>
+          <Run />
         </div>
         <div className="bg-gray-600 w-1/2 h-full flex items-center justify-center">
           <OutputSection />
