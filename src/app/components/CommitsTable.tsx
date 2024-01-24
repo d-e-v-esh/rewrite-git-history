@@ -16,8 +16,6 @@ const CommitsTable = () => {
   const [currentDataArray, setCurrentDataArray] = useState<Commit[]>([]);
 
   useEffect(() => {
-    console.log({ CR: state.currentData });
-
     dispatch({
       type: ActionType.SET_CURRENT_DATA,
       payload: currentDataArray,
@@ -25,14 +23,14 @@ const CommitsTable = () => {
   }, [currentDataArray, dispatch]);
 
   useEffect(() => {
-    const convertedJSON = parseGitRebaseInput(state.inputData);
-
-    dispatch({
-      type: ActionType.SET_CURRENT_DATA,
-      payload: convertedJSON,
-    });
-
-    setCurrentDataArray(convertedJSON);
+    if (state.inputData) {
+      const convertedJSON = parseGitRebaseInput(state.inputData);
+      dispatch({
+        type: ActionType.SET_CURRENT_DATA,
+        payload: convertedJSON,
+      });
+      setCurrentDataArray(convertedJSON);
+    }
   }, [state.inputData, dispatch]);
 
   type Commit = {
