@@ -11,15 +11,33 @@ import {
 } from "@/app/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { Separator } from "./ui/separator";
+import useAppContext, { ActionType } from "../context";
 
 interface DateAndTimePickerProps {
   defaultDateAndTime: Date;
+  index: number;
 }
 
 const DateAndTimePicker: React.FC<DateAndTimePickerProps> = ({
   defaultDateAndTime,
+  index,
 }) => {
   const [date, setDate] = React.useState<Date | null>(null);
+  const { state, dispatch } = useAppContext();
+
+  React.useEffect(() => {
+    if (date) {
+      const updatedData = state.currentData;
+      updatedData[index].dateAndTime = date;
+
+      () => {
+        dispatch({
+          type: ActionType.SET_CURRENT_DATA,
+          payload: updatedData,
+        });
+      };
+    }
+  }, [date]);
 
   React.useEffect(() => {
     setDate(defaultDateAndTime);
