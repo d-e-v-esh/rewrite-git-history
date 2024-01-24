@@ -53,6 +53,7 @@ const DataTable = <TData, TValue>({
   const table = useReactTable({
     data,
     columns,
+
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -68,6 +69,8 @@ const DataTable = <TData, TValue>({
       rowSelection,
     },
   });
+
+  // table.setPageSize(6);
   return (
     <div>
       <div className="w-full">
@@ -118,7 +121,7 @@ const DataTable = <TData, TValue>({
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
                     return (
-                      <TableHead key={header.id}>
+                      <TableHead className="p-2" key={header.id}>
                         {header.isPlaceholder
                           ? null
                           : flexRender(
@@ -138,7 +141,7 @@ const DataTable = <TData, TValue>({
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}>
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
+                      <TableCell className="p-2" key={cell.id}>
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
