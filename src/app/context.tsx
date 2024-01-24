@@ -1,11 +1,14 @@
 "use client";
 
 import { ReactNode, createContext, useContext, useReducer } from "react";
+import { DateRange } from "react-day-picker";
+import { getDefaultFromDate, getDefaultToDate } from "./utils/getDate";
 
 export enum ActionType {
   SET_INPUT_DATA = "SET_INPUT_DATA",
   SET_OUTPUT_DATA = "SET_OUTPUT_DATA",
   SET_CURRENT_DATA = "SET_CURRENT_DATA",
+  SET_DATE_RANGE = "SET_DATE_RANGE",
 }
 
 interface SetInputDataAction {
@@ -28,11 +31,21 @@ interface SetCurrentDataAction {
   }>;
 }
 
-type Action = SetInputDataAction | SetOutputDataAction | SetCurrentDataAction;
+interface SetDateRangeAction {
+  type: ActionType.SET_DATE_RANGE;
+  payload: DateRange;
+}
+
+type Action =
+  | SetInputDataAction
+  | SetOutputDataAction
+  | SetCurrentDataAction
+  | SetDateRangeAction;
 
 interface DefaultState {
   inputData: string;
   outputData: string;
+  dateRange: DateRange;
   currentData: Array<{
     command: string;
     hash: string;
@@ -45,6 +58,7 @@ const defaultState: DefaultState = {
   inputData: "",
   outputData: "",
   currentData: [],
+  dateRange: { from: getDefaultFromDate(3), to: getDefaultToDate() },
 };
 
 export const AppContext = createContext<
@@ -64,8 +78,10 @@ const appReducer = (state: DefaultState, action: Action): DefaultState => {
       return { ...state, outputData: action.payload };
 
     case ActionType.SET_CURRENT_DATA:
-      // Assuming we want to replace the entire array
       return { ...state, currentData: action.payload };
+
+    case ActionType.SET_DATE_RANGE:
+      return { ...state, dateRange: action.payload };
 
     default:
       return state;

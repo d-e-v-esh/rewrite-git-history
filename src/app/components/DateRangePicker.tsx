@@ -10,12 +10,52 @@ import { Calendar } from "@/app/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import { Separator } from "./ui/separator";
+import useAppContext, { ActionType } from "../context";
 
 function DateRangePicker({ className }: React.HTMLAttributes<HTMLDivElement>) {
-  const [date, setDate] = React.useState<DateRange | undefined>({
-    from: new Date(2022, 0, 20),
-    to: addDays(new Date(2022, 0, 20), 20),
-  });
+  const { state, dispatch } = useAppContext();
+  const [date, setDate] = React.useState<DateRange | undefined>();
+
+  console.log({ stateDate: state.dateRange });
+  React.useEffect(() => {
+    setDate(state.dateRange);
+  }, [state.dateRange]);
+
+  React.useEffect(() => {
+    console.log({ date });
+    if (date) {
+      dispatch({
+        type: ActionType.SET_DATE_RANGE,
+        payload: date,
+      });
+    }
+  }, [date]);
+
+  const handleTimeFromChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (date && date.from) {
+      const updatedFrom = new Date(
+        date.from.getFullYear(),
+        date.from.getMonth(),
+        date.from.getDate(),
+        parseInt(event.target.value.split(":")[0]),
+        parseInt(event.target.value.split(":")[1])
+      );
+      setDate({ ...date, from: updatedFrom });
+    }
+  };
+
+  const handleTimeToChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (date && date.to) {
+      const updatedTo = new Date(
+        date.to.getFullYear(),
+        date.to.getMonth(),
+        date.to.getDate(),
+        parseInt(event.target.value.split(":")[0]),
+        parseInt(event.target.value.split(":")[1])
+      );
+      setDate({ ...date, to: updatedTo });
+    }
+  };
 
   return (
     <div className={cn("grid gap-2", className)}>
@@ -47,7 +87,13 @@ function DateRangePicker({ className }: React.HTMLAttributes<HTMLDivElement>) {
             </div>
 
             <ClockIcon className="mr-2 h-4 w-4" />
-            {"10:12 - 18:14"}
+            {/* {"00:12 - 18:14"} */}
+            {date?.from
+              ? `${format(date.from, "HH")}:${format(date.from, "mm")} : `
+              : "12:12"}
+            {date?.to
+              ? `${format(date.to, "HH")}:${format(date.to, "mm")}`
+              : "12:12"}
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[1150px] h-auto">
@@ -59,6 +105,36 @@ function DateRangePicker({ className }: React.HTMLAttributes<HTMLDivElement>) {
             onSelect={setDate}
             numberOfMonths={4}
           />
+
+          <div>
+            <div className="flex items-center justify-center py-4 space-x-8">
+              <span>from</span>
+              <input
+                onChange={handleTimeFromChange}
+                defaultValue={
+                  date?.from
+                    ? `${format(date.from, "HH")}:${format(date.from, "mm")}`
+                    : "12:12"
+                }
+                className="bg-background p-4 outline outline-1"
+                aria-label="Time"
+                type="time"
+              />
+
+              <span>to</span>
+              <input
+                onChange={handleTimeToChange}
+                defaultValue={
+                  date?.to
+                    ? `${format(date.to, "HH")}:${format(date.to, "mm")}`
+                    : "12:12"
+                }
+                className="bg-background p-4 outline outline-1"
+                aria-label="Time"
+                type="time"
+              />
+            </div>
+          </div>
         </DialogContent>
       </Dialog>
     </div>
