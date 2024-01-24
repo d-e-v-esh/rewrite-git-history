@@ -9,6 +9,7 @@ const Run = () => {
   return (
     <div>
       <Button
+        className="h-20 px-5"
         onClick={() => {
           dispatch({
             type: ActionType.SET_OUTPUT_DATA,

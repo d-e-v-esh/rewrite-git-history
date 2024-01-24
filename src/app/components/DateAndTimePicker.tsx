@@ -90,12 +90,12 @@ const DateAndTimePicker: React.FC<DateAndTimePickerProps> = ({
 
         <Separator />
 
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center py-4">
           <input
             defaultValue={
               date ? `${format(date, "HH")}:${format(date, "mm")}` : "12:12"
             }
-            className="p-4"
+            className="bg-background p-4 outline outline-1"
             onChange={handleTimeChange}
             aria-label="Time"
             type="time"

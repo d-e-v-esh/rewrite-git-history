@@ -53,7 +53,6 @@ const DataTable = <TData, TValue>({
   const table = useReactTable({
     data,
     columns,
-
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -70,7 +69,6 @@ const DataTable = <TData, TValue>({
     },
   });
 
-  // table.setPageSize(6);
   return (
     <div>
       <div className="w-full">
