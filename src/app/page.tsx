@@ -1,8 +1,11 @@
 import Image from "next/image";
 import OutputSection from "./components/OutputSection";
+
 import InputSection from "./components/InputSection";
 import { Button } from "./components/ui/button";
 import Run from "./components/Run";
+import { GitHubLogoIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -10,8 +13,18 @@ export default function Home() {
     <div className="bg-lime-200 flex flex-col h-screen w-full text-muted-foreground">
       <div className="bg-background flex flex-row w-screen h-fit items-center justify-center">
         {/* heading */}
-        <div className="scroll-m-20 text-4xl font-bold tracking-tight py-4 text-primary">
+        <div className="text-4xl font-bold tracking-tight py-4 px-12 text-primary flex-grow">
           Rewrite Git History
+        </div>
+        <div className="left-0">
+          <Link
+            href={"https://github.com/d-e-v-esh/rewrite-git-history"}
+            rel="noopener noreferrer"
+            target="_blank">
+            <Button variant={"ghost"} className="w-fit h-fit rounded-full">
+              <GitHubLogoIcon className="h-10 w-8" />
+            </Button>
+          </Link>
         </div>
       </div>
       <div className="bg-background  flex flex-row flex-grow w-screen h-fit outline outline-2">
