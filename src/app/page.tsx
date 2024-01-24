@@ -16,7 +16,7 @@ export default function Home() {
         <div className="text-4xl font-bold tracking-tight py-4 px-12 text-primary flex-grow">
           Rewrite Git History
         </div>
-        <div className="left-0">
+        <div className="left-0 px-12">
           <Link
             href={"https://github.com/d-e-v-esh/rewrite-git-history"}
             rel="noopener noreferrer"
