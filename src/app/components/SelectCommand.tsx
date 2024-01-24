@@ -1,28 +1,59 @@
 "use client";
 
 import * as React from "react";
-
 import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/app/components/ui/select";
+import useAppContext, { ActionType } from "../context";
 
-const SelectCommand = () => {
-  const [command, setCommand] = React.useState("pick");
+const SelectCommand = ({
+  defaultValue,
+  index,
+}: {
+  defaultValue: string;
+  index: number;
+}) => {
+  const [command, setCommand] = React.useState<string>();
+  const { state, dispatch } = useAppContext();
+
+  React.useEffect(() => {
+    if (command) {
+      const updatedData = state.currentData;
+      updatedData[index].command = command;
+
+      () => {
+        dispatch({
+          type: ActionType.SET_CURRENT_DATA,
+          payload: updatedData,
+        });
+      };
+    }
+  }, [command]);
+
+  React.useEffect(() => {
+    setCommand(defaultValue);
+  }, [defaultValue]);
+
+  const listOptions: Record<string, string> = {
+    pick: "Pick",
+    reword: "Reword",
+    edit: "Edit",
+    squash: "Squash",
+  };
 
   return (
     <Select
+      defaultValue={command}
       onValueChange={(value) => {
         setCommand(value);
-      }}
-      defaultValue={"pick"}>
-      <SelectTrigger className="w-[110px]">
-        <SelectValue placeholder="Command" />
+      }}>
+      <SelectTrigger className="w-[100px]">
+        <SelectValue placeholder={listOptions[command]} />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
