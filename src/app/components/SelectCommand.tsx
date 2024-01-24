@@ -18,7 +18,7 @@ const SelectCommand = ({
   defaultValue: string;
   index: number;
 }) => {
-  const [command, setCommand] = React.useState<string>();
+  const [command, setCommand] = React.useState<string>("");
   const { state, dispatch } = useAppContext();
 
   React.useEffect(() => {

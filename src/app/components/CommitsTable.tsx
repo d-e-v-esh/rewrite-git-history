@@ -69,11 +69,17 @@ const CommitsTable = () => {
     {
       accessorKey: "command",
       header: "Command",
-      cell: () => (
-        <div>
-          <SelectCommand />
-        </div>
-      ),
+      cell: ({ row }) => {
+        const index = row.index;
+
+        const command = state.currentData[index].command;
+
+        return (
+          <div>
+            <SelectCommand index={index} defaultValue={command} />
+          </div>
+        );
+      },
     },
 
     {
@@ -112,7 +118,7 @@ const CommitsTable = () => {
         const dateAndTime = state.currentData[index].dateAndTime;
         return (
           <div>
-            <DateAndTimePicker defaultDateAndTime={dateAndTime} />
+            <DateAndTimePicker index={index} defaultDateAndTime={dateAndTime} />
           </div>
         );
       },
