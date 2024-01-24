@@ -5,6 +5,9 @@ import AceEditor from "react-ace";
 import useAppContext from "../context";
 import convertJsonToGit from "../utils/parseJsonToGit";
 
+import "ace-builds/src-noconflict/mode-markdown";
+import "ace-builds/src-noconflict/theme-twilight";
+
 const OutputSection = () => {
   const { state } = useAppContext();
   const [outputData, setOutputData] = useState<string>("");
@@ -23,14 +26,14 @@ const OutputSection = () => {
       <div>
         <AceEditor
           ref={aceEditorRef}
-          mode="json"
+          theme="twilight"
+          mode="markdown"
           width="40vw"
           height="75vh"
-          theme="dark"
           readOnly
           defaultValue={outputData}
           name="REBASE_OUTPUT"
-          fontSize={24}
+          fontSize={18}
           editorProps={{ $blockScrolling: false }}
         />
       </div>

@@ -14,6 +14,8 @@ import {
 import ReactAce from "react-ace/lib/ace";
 import useAppContext, { ActionType } from "../context";
 import { useState } from "react";
+import "ace-builds/src-noconflict/mode-markdown";
+import "ace-builds/src-noconflict/theme-twilight";
 
 const RebaseDialog = () => {
   const { state, dispatch } = useAppContext();
@@ -47,10 +49,10 @@ const RebaseDialog = () => {
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <ReactAce
-              mode="bash"
+              mode="markdown"
+              theme="twilight"
               width="60full"
               height="75vh"
-              theme="dark"
               defaultValue={state.inputData}
               onChange={onChange}
               name="REBASE_OUTPUT"
